@@ -1,0 +1,9 @@
+1. ttf-font-awesome
+2. alacritty
+3. fusuma
+4. avizo
+    4.1. brightnessctl
+    4.2. pamixer
+5. wtype
+6. acpi
+7. grimshot

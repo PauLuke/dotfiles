@@ -1,0 +1,11 @@
+swipe:
+  3:
+    left:
+      command: 'swaymsg -t command workspace next_on_output'
+    right:
+      command: 'swaymsg -t command workspace prev_on_output'
+    up:
+      command: 'wtype -k Escape'
+    down:
+      command: 'wofi --show=drun'
+
