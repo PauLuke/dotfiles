@@ -1,0 +1,210 @@
+##############################
+#  ____                      #
+# / ___|_      ____ _ _   _  #
+# \___ \ \ /\ / / _` | | | | #
+#  ___) \ V  V / (_| | |_| | #
+# |____/ \_/\_/ \__,_|\__, | #
+#                     |___/  #
+##############################
+
+#
+# Mod key
+#
+set $mod Mod4
+
+#
+# Your preferred terminal emulator
+#
+set $term alacritty
+
+#
+# Menu
+#
+set $menu wofi --show=drun
+
+#
+# Set wallpaper
+#
+output * bg ~/.config/background fill
+
+#
+# Touchpad
+#
+input "1267:12586:ELAN0504:01_04F3:312A_Touchpad"	{
+	dwt enabled
+	tap enabled
+	natural_scroll enabled
+	middle_emulation enabled
+}
+
+#
+# Keyboard
+#
+input "type:keyboard"	{
+	xkb_layout br
+	xkb_variant abnt2
+	xkb_model abnt2
+}
+
+#
+# Start Mako
+#
+exec mako
+
+#
+# Low battery warning
+#
+exec battery-low-notify.sh
+
+#
+# Avizo (audio and brightness control and notification)
+#
+bindsym XF86AudioRaiseVolume exec volumectl up
+bindsym XF86AudioLowerVolume exec volumectl down
+bindsym XF86AudioMute exec volumectl toggle-mute
+bindsym XF86AudioMicMute exec volumectl -m toggle-mute
+
+bindsym XF86MonBrightnessUp exec lightctl up
+bindsym XF86MonBrightnessDown exec lightctl down
+
+exec "avizo-service"
+
+### Key bindings
+#
+# Basics:
+#
+    # Start a terminal
+    bindsym $mod+Return exec $term
+
+    # Kill focused window
+    bindsym $mod+q kill
+
+    # Start your launcher
+    bindsym $mod+d exec $menu
+
+    # Reload the configuration file
+    bindsym $mod+Shift+r reload
+
+#
+# Moving around:
+#
+    bindsym $mod+Left focus left
+    bindsym $mod+Down focus down
+    bindsym $mod+Up focus up
+    bindsym $mod+Right focus right
+
+#
+# Workspaces:
+#
+    # Switch to workspace
+    bindsym $mod+1 workspace number 1
+    bindsym $mod+2 workspace number 2
+    bindsym $mod+3 workspace number 3
+    bindsym $mod+4 workspace number 4
+    bindsym $mod+5 workspace number 5
+    bindsym $mod+6 workspace number 6
+    bindsym $mod+7 workspace number 7
+    bindsym $mod+8 workspace number 8
+    bindsym $mod+9 workspace number 9
+    bindsym $mod+0 workspace number 10
+    # Move focused container to workspace
+    bindsym $mod+Shift+1 move container to workspace number 1
+    bindsym $mod+Shift+2 move container to workspace number 2
+    bindsym $mod+Shift+3 move container to workspace number 3
+    bindsym $mod+Shift+4 move container to workspace number 4
+    bindsym $mod+Shift+5 move container to workspace number 5
+    bindsym $mod+Shift+6 move container to workspace number 6
+    bindsym $mod+Shift+7 move container to workspace number 7
+    bindsym $mod+Shift+8 move container to workspace number 8
+    bindsym $mod+Shift+9 move container to workspace number 9
+    bindsym $mod+Shift+0 move container to workspace number 10
+
+#
+# Layout stuff:
+#
+    # You can "split" the current object of your focus with
+    # $mod+b or $mod+v, for horizontal and vertical splits
+    # respectively.
+    bindsym $mod+h splith
+    bindsym $mod+v splitv
+
+    # Switch the current container between different layout styles
+    bindsym $mod+s layout stacking
+    bindsym $mod+w layout tabbed
+    bindsym $mod+e layout toggle split
+
+    # Make the current focus fullscreen
+    bindsym $mod+f fullscreen
+
+    # Toggle the current focus between tiling and floating mode
+    bindsym $mod+Shift+space floating toggle
+
+    # Swap focus between the tiling area and the floating area
+    bindsym $mod+space focus mode_toggle
+
+    # Move focus to the parent container
+    bindsym $mod+a focus parent
+
+#
+# Scratchpad:
+#
+    # Sway has a "scratchpad", which is a bag of holding for windows.
+    # You can send windows there and get them back later.
+
+    # Move the currently focused window to the scratchpad
+    bindsym $mod+Shift+minus move scratchpad
+
+    # Show the next scratchpad window or hide the focused scratchpad window.
+    # If there are multiple scratchpad windows, this command cycles through them.
+    bindsym $mod+minus scratchpad show
+
+#
+# Fusuma
+#
+exec sh -c "fusuma -d"
+
+#
+# Power menu
+#
+bindsym $mod+p exec powermenu.sh
+
+#
+# Print Screen
+#
+bindsym Print exec grimshot --notify save area
+
+#
+# Charging and discharging notifications
+#
+exec char-dischar.sh
+
+#
+# Swayidle
+#
+exec swayidle -w timeout 180 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' timeout 185 'swaylock -f -u -i ~/.config/lockscreen.png' timeout 600 'systemctl suspend'
+
+#
+# Titlebars
+#
+default_border pixel 2
+default_floating_border pixel 2
+
+client.focused          #6272a4 #6272a4 #6272a4 #6272a4 #6272a4
+client.focused_inactive #5f676a #5f676a #5f676a #5f676a #5f676a
+client.unfocused        #5f676a #5f676a #5f676a #5f676a #5f676a
+
+#
+# Gaps
+#
+gaps inner 7
+
+#
+# Status Bar:
+#
+bar {
+    position top
+
+    swaybar_command waybar
+}
+
+include /etc/sway/config.d/*
