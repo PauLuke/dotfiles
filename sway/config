@@ -1,3 +1,11 @@
+#############################
+#  ____                     #
+# / ___|_      ____ _ _   _ #
+# \___ \ \ /\ / / _` | | | |#
+#  ___) \ V  V / (_| | |_| |#
+# |____/ \_/\_/ \__,_|\__, |#
+#                     |___/ #
+#############################
 
 #
 # Mod key
@@ -17,7 +25,7 @@ set $menu wofi --show=drun
 #
 # Set wallpaper
 #
-exec_always swaybg -i ~/.config/background -m fill
+output * bg ~/.config/background fill
 
 #
 # Touchpad
@@ -53,7 +61,7 @@ exec battery-low-notify.sh
 #
 bindsym XF86AudioRaiseVolume exec volumectl up
 bindsym XF86AudioLowerVolume exec volumectl down
-bindsym XF86AudioMute exec volumectl toggle
+bindsym XF86AudioMute exec volumectl toggle-mute
 bindsym XF86AudioMicMute exec volumectl -m toggle-mute
 
 bindsym XF86MonBrightnessUp exec lightctl up
@@ -74,18 +82,8 @@ exec "avizo-service"
     # Start your launcher
     bindsym $mod+d exec $menu
 
-    # Drag floating windows by holding down $mod and left mouse button.
-    # Resize them with right mouse button + $mod.
-    # Despite the name, also works for non-floating windows.
-    # Change normal to inverse to use left mouse button for resizing and right
-    # mouse button for dragging.
-    floating_modifier $mod normal
-
     # Reload the configuration file
     bindsym $mod+Shift+r reload
-
-    # Exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 
 #
 # Moving around:
@@ -163,7 +161,7 @@ exec "avizo-service"
 #
 # Fusuma
 #
-exec_always sh -c "pkill fusuma; fusuma -d"
+exec sh -c "fusuma -d"
 
 #
 # Power menu
@@ -181,14 +179,24 @@ bindsym Print exec grimshot --notify save area
 exec char-dischar.sh
 
 #
-# Gaps
+# Swayidle
 #
-gaps inner 10
+exec swayidle -w timeout 180 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' timeout 185 'swaylock -f -u -i ~/.config/lockscreen.png' timeout 600 'systemctl suspend'
 
 #
-# Title bar
+# Titlebars
 #
 default_border pixel 2
+default_floating_border pixel 2
+
+client.focused          #6272a4 #6272a4 #6272a4 #6272a4 #6272a4
+client.focused_inactive #5f676a #5f676a #5f676a #5f676a #5f676a
+client.unfocused        #5f676a #5f676a #5f676a #5f676a #5f676a
+
+#
+# Gaps
+#
+gaps inner 7
 
 #
 # Status Bar:
