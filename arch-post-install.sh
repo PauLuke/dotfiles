@@ -25,7 +25,7 @@ makepkg -si
 #
 # Install my essential packages
 #
-paru -Syu firefox ttf-font-awesome alacritty ruby-fusuma ttf-font-awesome brightnessctl pamixer avizo wtype acpi grimshot tlp pitivi yt-dlp obsidian syncthing vlc fish
+paru -Syu firefox ttf-font-awesome alacritty ruby-fusuma ttf-font-awesome brightnessctl pamixer avizo wtype acpi grimshot tlp pitivi gst-libav yt-dlp obsidian syncthing vlc fish
 
 #
 # Rebooting the system
