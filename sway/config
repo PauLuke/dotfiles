@@ -1,11 +1,11 @@
-#############################
-#  ____                     #
-# / ___|_      ____ _ _   _ #
-# \___ \ \ /\ / / _` | | | |#
-#  ___) \ V  V / (_| | |_| |#
-# |____/ \_/\_/ \__,_|\__, |#
-#                     |___/ #
-#############################
+##############################
+#  ____                      #
+# / ___|_      ____ _ _   _  #
+# \___ \ \ /\ / / _` | | | | #
+#  ___) \ V  V / (_| | |_| | #
+# |____/ \_/\_/ \__,_|\__, | #
+#                     |___/  #
+##############################
 
 #
 # Mod key
@@ -181,7 +181,7 @@ exec char-dischar.sh
 #
 # Swayidle
 #
-exec swayidle -w timeout 180 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' timeout 185 'swaylock -f -u -i ~/.config/lockscreen.png' timeout 600 'systemctl suspend'
+exec swayidle -w timeout 180 'inhibitor.sh && swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' timeout 600 'inhibitor.sh && systemctl suspend'
 
 #
 # Titlebars

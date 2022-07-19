@@ -12,10 +12,12 @@
         "format-ethernet": "{ifname}: {ipaddr}/{cidr}",
         "format-linked": "{ifname} (No IP)",
         "format-disconnected": "Disconnected",
-        "format-alt": "{ifname}: {ipaddr}/{cidr}"
+        "format-alt": "{ifname}: {ipaddr}/{cidr}",
+		"on-click": "wofi-wifi-menu.sh"
     },
     "battery": {
-        "format": "🗲 {capacity}%"
+        "format": "🗲 {capacity}%",
+        "on-click": "powermenu.sh"
     },
     "clock": {
         "format": "{:%b %d  %H:%M}"

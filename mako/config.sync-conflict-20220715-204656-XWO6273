@@ -1,14 +1,13 @@
 sort=-time
 layer=overlay
-background-color=#1b1d2d
+background-color=#2e3440
 width=300
 height=110
 border-size=2
-border-color=#42515d
+border-color=#878a99
 border-radius=15
 icons=0
 max-icon-size=64
-anchor=top-center
 default-timeout=6000
 ignore-timeout=1
 text-alignment=center
@@ -19,8 +18,8 @@ font=FontAwesome 10
 [urgency=normal]
 
 [urgency=high]
-border-color=#e64553
-on-notify=exec mpv /usr/share/sounds/freedesktop/stereo/message.oga
+border-color=#88c0d0
+default-timeout=0
 
 [category=mpd]
 group-by=category
