@@ -25,7 +25,7 @@ makepkg -si
 #
 # Install my essential packages
 #
-paru -Syu firefox ttf-font-awesome kitty ruby-fusuma ttf-font-awesome brightnessctl pamixer wtype acpi grimshot tlp vlc wofi-wifi-menu-git fish
+paru -Syu firefox ttf-font-awesome kitty ruby-fusuma ttf-font-awesome brightnessctl pamixer wtype acpi grimshot tlp vlc fish
 
 #
 # Bring my config files
