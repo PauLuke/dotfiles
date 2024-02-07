@@ -1,9 +1,0 @@
-mode=drun
-insensitive=true
-allow_images=true
-width=400
-height=200
-term=alacritty
-hide_scroll=true
-yoffset=100
-xoffset=483
