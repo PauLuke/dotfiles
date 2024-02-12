@@ -1,0 +1,58 @@
+general {
+        output_format = "i3bar"
+        colors = false
+        markup = pango
+        interval = 5
+        color_good = '#2f343f'
+		color_degraded = '#ebcb8b'
+		color_bad = '#ba5e57'
+}
+
+order += "tztime brasilia"
+order += "time"
+order += "cpu_temperature 0"
+order += "wireless wlan0"
+order += "volume master"
+order += "battery 1"
+
+tztime brasilia {
+	format = "<span background='#98bad5'> 📅 %d/%m/%Y </span>"
+}
+time {
+	format = "<span background='#98bad5'>  🕗 %H:%M </span>"
+}
+
+cpu_temperature 0 {
+        format = "<span background='#f97c7c'> 🌡️ %degrees °C </span>"
+        path = "/sys/class/thermal/thermal_zone0/temp"
+}
+
+ethernet enp1s0 {
+        format_up = "<span background='#88c0d0'>  %ip </span>"
+        format_down = "<span background='#88c0d0'>  Disconnected </span>"
+}
+
+wireless wlan0 {
+        format_up = "<span background='#b48ead'> 🛜 %essid </span>"
+        format_down = "<span background='#b48ead'> 🛜 Disconnected </span>"
+}
+
+volume master {
+        format = "<span background='#ebcb8b'> 🔊 %volume </span>"
+        format_muted = "<span background='#ebcb8b'> 🔇 Muted </span>"
+        device = "default"
+        mixer = "Master"
+        mixer_idx = 0
+}
+
+battery 1 {
+	last_full_capacity = true
+        format = "<span background='#77dd76'> %status %percentage </span>"
+        format_down = "No Battery"
+        status_chr = "⚡ Charging"
+        status_bat = "🔋 Battery"
+        status_unk = "Unknown"
+        status_full = "🔋 Charged"
+        path = "/sys/class/power_supply/BAT%d/uevent"
+        low_threshold = 10
+}
