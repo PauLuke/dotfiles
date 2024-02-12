@@ -11,7 +11,7 @@
 set $mod Mod4
 
 # define background
-exec_always --no-startup-id feh --bg-fill /home/pauluke/.config/i3/wallpaper.jpg
+exec_always --no-startup-id feh --bg-fill ~/.config/i3/background
 
 # font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
