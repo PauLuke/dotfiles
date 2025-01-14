@@ -49,8 +49,9 @@ window#waybar.hidden {
 #workspaces button.focused {
   background-color: transparent;
 }
-#workspace button.hover {
-  background-color: transparent;
+#workspaces button:hover {
+  background: #d2d2fc;
+  border-radius: 3px;
 }
 #workspaces button.active {
   color: #fff;
@@ -306,4 +307,8 @@ label:focus {
 
 #keyboard-state > label.locked {
   background: rgba(0, 0, 0, 0.2);
+}
+
+#custom-power {
+	color: #1e1e1e;
 }
