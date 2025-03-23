@@ -50,8 +50,7 @@ window#waybar.hidden {
   background-color: transparent;
 }
 #workspaces button:hover {
-  background: #d2d2fc;
-  border-radius: 3px;
+  background: none;
 }
 #workspaces button.active {
   color: #fff;
@@ -70,6 +69,7 @@ window#waybar.hidden {
 
 /* Each module */
 #clock,
+#language,
 #battery,
 #cpu,
 #memory,
@@ -101,27 +101,27 @@ window#waybar.hidden {
 #custom-weather.snowyIcyNight,
 #custom-weather.default {
   padding: 0px 15px;
-  color: #e5e5e5;
+  color: #D9D4D0;
   /* color: #bf616a; */
   border-radius: 20px;
-  background-color: #1e1e1e;
+  background-color: #1D1F24;
 }
 
 #window,
 #workspaces {
   border-radius: 20px;
   padding: 0px 10px;
-  background-color: #1e1e1e;
+  background-color: #1D1F24;
 }
 
 #cpu {
-  color: #fb958b;
-  background-color: #1e1e1e;
+  color: #D9D4D0;
+  background-color: #1D1F24;
 }
 
 #memory {
-  color: #ebcb8b;
-  background-color: #1e1e1e;
+  color: #D9D4D0;
+  background-color: #1D1F24;
 }
 
 #custom-power-menu {
@@ -180,16 +180,16 @@ window#waybar.hidden {
 }
 
 #pulseaudio {
-  color: #7d9bba;
+  color: #D9D4D0;
 }
 
 #backlight {
   /* color: #EBCB8B; */
-  color: #8fbcbb;
+  color: #D9D4D0;
 }
 
 #clock {
-  color: #c8d2e0;
+  color: #D9D4D0;
   /* background-color: #14141e; */
 }
 
@@ -201,7 +201,7 @@ window#waybar.hidden {
 #battery.charging,
 #battery.full,
 #battery.plugged {
-  color: #26a65b;
+  color: #55cf87;
   /* background-color: #26a65b; */
 }
 
@@ -285,14 +285,6 @@ label:focus {
   color: #2d3436;
 }
 
-#language {
-  background: #00b093;
-  color: #740864;
-  padding: 0 0px;
-  margin: 0 5px;
-  min-width: 16px;
-}
-
 #keyboard-state {
   background: #97e1ad;
   color: #000000;
@@ -310,5 +302,5 @@ label:focus {
 }
 
 #custom-power {
-	color: #1e1e1e;
+	color: #1D1F24;
 }
