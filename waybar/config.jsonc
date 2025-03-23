@@ -30,6 +30,7 @@
         "wireplumber",
         "custom/screenshot_t",
         "tray",
+        "hyprland/language",
         "custom/power"
     ],
 
@@ -54,7 +55,7 @@
         "states": {
             "good": 95,
             "warning": 30,
-            "critical": 15
+            "critical": 20
         },
         "format": "{icon} {capacity}%",
         "format-charging": " {capacity}%",
@@ -212,5 +213,14 @@
     "tray": {
         "icon-size": 15,
         "spacing": 5
-    }
+    },
+
+    "hyprland/language": {
+		"format": "{}",
+		"min-length" : 3,
+		"format-pt": "BR",
+		"format-en": "US",
+		"keyboard-name": "at-translated-set-2-keyboard",
+		"on-click": "hyprctl switchxkblayout at-translated-set-2-keyboard next"
+	}
 }
