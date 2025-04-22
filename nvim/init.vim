@@ -7,9 +7,11 @@ set clipboard=unnamedplus
 " highlight current cursorline
 set cursorline
 
-" Use spaces instead of tabs
-set expandtab
-set softtabstop=2
+" Config for tabs
+set expandtab " Use spaces instead of tabs
+set tabstop=2 " Number of spaces a tab counts for
+set softtabstop=2 " Number of spaces a <Tab> feels like
+set shiftwidth=2 " Number of spaces for each indentation level
 
 " enable mouse support in (a)ll modes
 set mouse=a
@@ -17,15 +19,19 @@ set mouse=a
 " Mapping
 " Using space as leader
 let mapleader = " "
+
 " Map Ctrl+S to save in normal and insert modes
 nnoremap <C-s> :w<CR>
 inoremap <C-s> <Esc>:w<CR>
+
 " Launch plugins
 nnoremap <silent> t :Telescope find_files<CR>
 nnoremap <silent> <leader>n :Neotree toggle<CR>
 nnoremap <silent> <leader>e :ToggleTerm<CR>
 
 " Vim-plug section
+" vim-plug is located under ~/.local/share/nvim/site/autoload/ and the plugins
+" it installs are located in ~/.local/share/nvim/plugged/ 
 call plug#begin()
 
 " My plugins
@@ -44,6 +50,7 @@ Plug 'nvim-lualine/lualine.nvim'
 Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
 Plug 'folke/noice.nvim'
 Plug 'rcarriga/nvim-notify'
+Plug 'saghen/blink.cmp' " require manual intervention. Go to '~/.local/share/nvim/plugged/blink.cmp' and run 'cargo build --release'. This will build the rust fuzzy matcher that blink uses. There is a way to make vim-plug do this automatically, but I don't know how to do it.
 
 call plug#end()
 
@@ -59,5 +66,19 @@ require("bufferline").setup{ options = {offsets = {{filetype = "neo-tree", text=
 require("toggleterm").setup{size = 10, persist_mode = false}
 require("neo-tree").setup{window = {width = 29}}
 require("noice").setup()
-EOF
+require('blink.cmp').setup{keymap = {preset = 'none', ['<Up>'] = { 'select_prev', 'fallback' }, ['<Down>'] = { 'select_next', 'fallback' }, ['<Tab>'] = { 'select_and_accept' }, ['<S-Tab>'] = { 'snippet_forward', 'fallback' }, } }
 
+-- Setup LSP using vim.lsp.config
+vim.lsp.config['python'] = {
+  -- Command and arguments to start the server.
+  cmd = { 'pylsp' },
+  -- Filetypes to automatically attach to.
+  filetypes = { 'python' },
+}
+vim.lsp.config['c'] = {
+  cmd = { 'clangd' },
+  filetypes = { 'c' },
+}
+vim.lsp.enable('c')
+vim.lsp.enable('python')
+EOF
