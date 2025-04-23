@@ -66,7 +66,7 @@ require("bufferline").setup{ options = {offsets = {{filetype = "neo-tree", text=
 require("toggleterm").setup{size = 10, persist_mode = false}
 require("neo-tree").setup{window = {width = 29}}
 require("noice").setup()
-require('blink.cmp').setup{keymap = {preset = 'none', ['<Up>'] = { 'select_prev', 'fallback' }, ['<Down>'] = { 'select_next', 'fallback' }, ['<Tab>'] = { 'select_and_accept' }, ['<S-Tab>'] = { 'snippet_forward', 'fallback' }, } }
+require('blink.cmp').setup{keymap = {preset = 'none', ['<Up>'] = { 'select_prev', 'fallback' }, ['<Down>'] = { 'select_next', 'fallback' }, ['<Tab>'] = { 'select_and_accept', 'fallback' }, ['<S-Tab>'] = { 'snippet_forward', 'fallback' }, } }
 
 -- Setup LSP using vim.lsp.config
 vim.lsp.config['python'] = {
@@ -79,6 +79,16 @@ vim.lsp.config['c'] = {
   cmd = { 'clangd' },
   filetypes = { 'c' },
 }
-vim.lsp.enable('c')
+vim.lsp.config['css'] = {
+  cmd = { 'vscode-css-language-server', '--stdio' },
+  filetypes = { 'css' },
+}
+vim.lsp.config['rust'] = {
+  cmd = { 'rust-analyzer' },
+  filetypes = { 'rust' },
+}
 vim.lsp.enable('python')
+vim.lsp.enable('c')
+vim.lsp.enable('css')
+vim.lsp.enable('rust')
 EOF
