@@ -7,3 +7,6 @@
 [submodule "zsh/zsh-history-substring-search"]
 	path = zsh/zsh-history-substring-search
 	url = https://github.com/zsh-users/zsh-history-substring-search
+[submodule "zsh/zsh-auto-notify"]
+	path = zsh/zsh-auto-notify
+	url = https://github.com/MichaelAquilina/zsh-auto-notify.git
