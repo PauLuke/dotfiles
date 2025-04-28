@@ -1,7 +1,7 @@
 * {
   /* `otf-font-awesome` is required to be installed for icons */
   font-family: "JetBrainsMono Nerd Font";
-  font-size: 15px;
+  font-size: 8pt;
   font-weight: 900;
   margin: 0;
   padding: 0;
@@ -88,7 +88,6 @@ window#waybar.hidden {
 #bluetooth,
 #custom-hyprPicker,
 #custom-power-menu,
-#custom-power,
 #custom-spotify,
 #custom-weather,
 #custom-weather.severe,
@@ -239,7 +238,7 @@ label:focus {
 }
 
 #network {
-  min-width: 150px;
+  color: #b48ead;
 }
 
 #network.disconnected {
@@ -300,4 +299,8 @@ label:focus {
 
 #keyboard-state > label.locked {
   background: rgba(0, 0, 0, 0.2);
+}
+
+#custom-power {
+	color: #1D1F24;
 }

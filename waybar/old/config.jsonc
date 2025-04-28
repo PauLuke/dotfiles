@@ -21,19 +21,17 @@
     "modules-center": [
     ],
     "modules-right": [
-    	  "clock",
+    	"clock",
         "memory",
         "cpu",
-	      "network",
         "battery",
         "backlight",
+        //"pulseaudio",
         "wireplumber",
-	      "bluetooth",
         "custom/screenshot_t",
-	      "idle_inhibitor",
+        "tray",
         "hyprland/language",
-	      "tray",
-	      "custom/power"
+        "custom/power"
     ],
 
 
@@ -43,12 +41,13 @@
 
     "custom/screenshot_t":{
         "format":"",
-        "on-click": "grim"
+        "on-click": "grim",
     },
 
     "memory": {
         "interval": 30,
         "format": "  {used:0.2f} / {total:0.0f} GB",
+        "on-click": "alacritty -e btop"
     },
 
     "battery": {
@@ -81,6 +80,19 @@
         "on-scroll-up": "brightnessctl s +5%"
     },
     
+    "custom/media": {
+        "format": "{icon} {}",
+        "return-type": "json",
+        "max-length": 40,
+        "format-icons": {
+            "spotify": "",
+            "default": "🎜"
+        },
+        "escape": true,
+        "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
+        // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
+    },
+
     "custom/power": {
         "format": "",
         "tooltip": false,
@@ -93,6 +105,30 @@
         "today-format": "<b>{}</b>"
     },
 
+    "custom/gammastep": {
+      "interval": 5,
+      "return-type": "json",
+      "exec": {
+        "pre": "if unit_status=\"$(systemctl --user is-active gammastep)\"; then\nstatus=\"$unit_status ($(journalctl --user -u gammastep.service -g 'Period: ' | tail -1 | cut -d ':' -f6 | xargs))\"\nelse\nstatus=\"$unit_status\"\nfi",
+        "alt": "${status:-inactive}",
+        "tooltip": "Gammastep is $status",
+      },
+      "format": "{icon}",
+      "format-icons": {
+        "activating": "󰁪 ",
+        "deactivating": "󰁪 ",
+        "inactive": "? ",
+        "active (Night)": " ",
+        "active (Nighttime)": " ",
+        "active (Transition (Night)": " ",
+        "active (Transition (Nighttime)": " ",
+        "active (Day)": " ",
+        "active (Daytime)": " ",
+        "active (Transition (Day)": " ",
+        "active (Transition (Daytime)": " ",
+      },
+      "on-click": "systemctl --user is-active gammastep && systemctl --user stop gammastep || systemctl --user start gammastep",
+    },
 
     "cpu": {
         "interval": 1,
@@ -115,12 +151,40 @@
             "7": "七",
             "8": "八",
             "9": "九",
-            "10": "十"
+            "10": "十",
         },
         "on-scroll-up": "hyprctl dispatch workspace e+1 1>/dev/null",
         "on-scroll-down": "hyprctl dispatch workspace e-1 1>/dev/null",
         "sort-by-number": true,
-        "active-only": false
+        "active-only": false,
+    },
+
+    "hyprland/window": {
+        "max-length": 100,
+        "separate-outputs": true
+    },
+
+    "pulseaudio": {
+        "scroll-step": 3, // %, can be a float
+        "format": "{icon} {volume}% {format_source}",
+        "format-bluetooth": "{volume}% {icon} {format_source}",
+        "format-bluetooth-muted": " {icon} {format_source}",
+        "format-muted": " {format_source}",
+        //"format-source": "{volume}% ",
+        //"format-source-muted": "",
+        "format-source": "",
+        "format-source-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol",
+        "on-click-right": "amixer sset Master toggle"
     },
 
     "wireplumber": {
@@ -143,7 +207,7 @@
             "portable": " ",
             "car": " ",
             "default": [" ", " ", " "]
-        }
+        },
     },
 
     "tray": {
@@ -152,44 +216,11 @@
     },
 
     "hyprland/language": {
-	      "format": "{}",
-	      "min-length" : 3,
-	      "format-pt": "BR",
-	      "format-en": "US",
-	      "keyboard-name": "at-translated-set-2-keyboard",
-	      "on-click": "hyprctl switchxkblayout at-translated-set-2-keyboard next"
-    },
-
-    "bluetooth": {
-	      // "controller": "controller1", // specify the alias of the controller if there are more than 1 on the system
-	      "format": " {status}",
-	      "format-disabled": "", // an empty format will hide the module
-	      "format-connected": " {num_connections} connected",
-	      "tooltip-format": "{controller_alias}\t{controller_address}",
-	      "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
-	      "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
-	      "on-click": "~/.scripts/rofi-bluetooth"
-    },
-
-    "network": {
-        "interface": "wlan0",
-    	  "format": "{bandwidthUpBits} {bandwidthDownBits} ",
-    	  "format-wifi": "  {essid}",
-    	  "format-ethernet": "{ipaddr}/{cidr} 󰊗",
-    	  "format-disconnected": "", //An empty format will hide the module.
-    	  "tooltip-format": "{ifname} via {gwaddr} 󰊗",
-    	  "tooltip-format-wifi": "{bandwidthUpBits} {bandwidthDownBits} ",
-    	  "tooltip-format-ethernet": "{ifname} ",
-    	  "tooltip-format-disconnected": "Disconnected",
-    	  "max-length": 50,
-	      "interval": 5
-    },
-
-    "idle_inhibitor": {
-        "format": "{icon}",
-        "format-icons": {
-        "activated": "",
-        "deactivated": ""
-        }
-    }
+		"format": "{}",
+		"min-length" : 3,
+		"format-pt": "BR",
+		"format-en": "US",
+		"keyboard-name": "at-translated-set-2-keyboard",
+		"on-click": "hyprctl switchxkblayout at-translated-set-2-keyboard next"
+	}
 }
