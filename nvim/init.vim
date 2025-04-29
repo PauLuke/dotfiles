@@ -19,11 +19,9 @@ set mouse=a
 " Mapping
 " Using space as leader
 let mapleader = " "
-
 " Map Ctrl+S to save in normal and insert modes
 nnoremap <C-s> :w<CR>
 inoremap <C-s> <Esc>:w<CR>
-
 " Launch plugins
 nnoremap <silent> t :Telescope find_files<CR>
 nnoremap <silent> <leader>n :Neotree toggle<CR>
@@ -33,7 +31,6 @@ nnoremap <silent> <leader>e :ToggleTerm<CR>
 " vim-plug is located under ~/.local/share/nvim/site/autoload/ and the plugins
 " it installs are located in ~/.local/share/nvim/plugged/ 
 call plug#begin()
-
 " My plugins
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release' }
@@ -51,7 +48,7 @@ Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
 Plug 'folke/noice.nvim'
 Plug 'rcarriga/nvim-notify'
 Plug 'saghen/blink.cmp' " require manual intervention. Go to '~/.local/share/nvim/plugged/blink.cmp' and run 'cargo build --release'. This will build the rust fuzzy matcher that blink uses. There is a way to make vim-plug do this automatically, but I don't know how to do it.
-
+Plug 'lukas-reineke/indent-blankline.nvim'
 call plug#end()
 
 " Setting theme
@@ -66,8 +63,8 @@ require("bufferline").setup{ options = {offsets = {{filetype = "neo-tree", text=
 require("toggleterm").setup{size = 10, persist_mode = false}
 require("neo-tree").setup{window = {width = 29}}
 require("noice").setup()
-require('blink.cmp').setup{keymap = {preset = 'none', ['<Up>'] = { 'select_prev', 'fallback' }, ['<Down>'] = { 'select_next', 'fallback' }, ['<Tab>'] = { 'select_and_accept', 'fallback' }, ['<S-Tab>'] = { 'snippet_forward', 'fallback' }, } }
-
+require('blink.cmp').setup{keymap = {preset = 'none', ['<Up>'] = { 'select_prev', 'fallback' }, ['<Down>'] = { 'select_next', 'fallback' }, ['<CR>'] = { 'select_and_accept', 'fallback' }, ['<S-Tab>'] = { 'snippet_forward', 'fallback' }, } }
+require("ibl").setup()
 -- Setup LSP using vim.lsp.config
 vim.lsp.config['python'] = {
   -- Command and arguments to start the server.
@@ -77,7 +74,7 @@ vim.lsp.config['python'] = {
 }
 vim.lsp.config['c'] = {
   cmd = { 'clangd' },
-  filetypes = { 'c' },
+  filetypes = { 'c', 'cpp' },
 }
 vim.lsp.config['css'] = {
   cmd = { 'vscode-css-language-server', '--stdio' },
@@ -87,8 +84,15 @@ vim.lsp.config['rust'] = {
   cmd = { 'rust-analyzer' },
   filetypes = { 'rust' },
 }
+vim.lsp.config['typescript'] = {
+  cmd = { 'typescript-language-server', '--stdio' },
+  filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
+}
+
 vim.lsp.enable('python')
 vim.lsp.enable('c')
 vim.lsp.enable('css')
 vim.lsp.enable('rust')
+vim.lsp.enable('typescript')
 EOF
+
