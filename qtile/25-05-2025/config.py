@@ -1,7 +1,6 @@
 from libqtile import bar, layout, qtile, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
-from libqtile.utils import guess_terminal
 from libqtile.backend.wayland import InputConfig
 import os
 import subprocess
@@ -10,14 +9,18 @@ from libqtile import hook
 
 mod = "mod4"
 terminal = "foot"
+launcher = "~/.config/qtile/assets/scripts/launcher.sh"
+screenshot = 'sh -c \'grim && notify-send "  Screenshot taken"\''
+volume = "~/.config/qtile/assets/scripts/volume.sh"
+brightness = "~/.config/qtile/assets/scripts/brightness.sh"
 
 
 def wifi():
-    qtile.cmd_spawn("sh -c ~/.scripts/rofi-wifi")
+    qtile.cmd_spawn("sh -c ~/.config/qtile/assets/scripts/rofi-wifi")
 
 
 def bluetooth():
-    qtile.cmd_spawn("sh -c ~/.scripts/rofi-bluetooth")
+    qtile.cmd_spawn("sh -c ~/.config/qtile/assets/scripts/rofi-bluetooth")
 
 
 def logout():
@@ -25,7 +28,7 @@ def logout():
 
 
 def search():
-    qtile.cmd_spawn("rofi -show drun")
+    qtile.cmd_spawn(app_launcher)
 
 
 keys = [
@@ -75,19 +78,19 @@ keys = [
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
     # Media volume keys
-    Key([], "XF86AudioMute", lazy.spawn("pactl set-sink-mute 0 toggle")),
-    Key([], "XF86AudioLowerVolume", lazy.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-")),
-    Key([], "XF86AudioRaiseVolume", lazy.spawn("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+")),
+    Key([], "XF86AudioRaiseVolume", lazy.spawn(f"sh -c '{volume} up'"), desc="Increase volume"),
+    Key([], "XF86AudioLowerVolume", lazy.spawn(f"sh -c '{volume} down'"), desc="Decrease volume"),
+    Key([], "XF86AudioMute", lazy.spawn(f"sh -c '{volume} mute'"), desc="Toggle mute"),
     # Brightness controll
-    Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 2%-")),
-    Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set +2%")),
+    Key([], "XF86MonBrightnessUp", lazy.spawn(f"sh -c '{brightness} up'")),
+    Key([], "XF86MonBrightnessDown", lazy.spawn(f"sh -c '{brightness} down'")),
     # Launch rofi
-    Key([mod], "d", lazy.spawn("rofi -show drun"), desc="Launch Rofi"),
+    Key([mod], "d", lazy.spawn(f"sh -c {launcher}"), desc="Launch applications"),
     # Move through groups
     Key([mod], "Right", lazy.screen.next_group()),
     Key([mod], "Left", lazy.screen.prev_group()),
     # Screenshot
-    Key([], "Print", lazy.spawn("grim"), desc="Take a screenshot"),
+    Key([], "Print", lazy.spawn(screenshot), desc="Take screenshot"),
 ]
 
 # Add key bindings to switch VTs in Wayland.
@@ -149,7 +152,6 @@ layouts = [
     # layout.Bsp(),
     # layout.Matrix(),
     layout.MonadTall(**theme),
-    layout.Floating(**theme),
     # layout.MonadWide(),
     # layout.RatioTile(),
     # layout.Tile(),
@@ -169,7 +171,7 @@ extension_defaults = widget_defaults.copy()
 screens = [
 
     Screen(
-        wallpaper='~/.config/qtile/wallpaper.png',
+        wallpaper='~/.config/qtile/assets/wallpaper/wallpaper.png',
         wallpaper_mode='fill',
 
         top=bar.Bar(
@@ -212,7 +214,7 @@ screens = [
                 widget.Clock(
                     format='%d/%m',
                     font='JetBrains Mono Bold',
-                    foreground='#eea393',
+                    foreground='#fcfcfc',
                 ),
                 widget.Spacer(
                     length=10
@@ -225,34 +227,37 @@ screens = [
                 widget.Clock(
                     format='%H:%M',
                     font='JetBrains Mono Bold',
-                    foreground='#CAA9E0',
+                    foreground='#fcfcfc',
                 ),
                 widget.Spacer(
                     length=bar.STRETCH
                 ),
                 widget.Image(
-                    filename='~/.config/qtile/bluetooth-rectangle.svg',
-                    margin=6,
-                    mouse_callbacks={"Button1": bluetooth},
-                ),
-                widget.Image(
-                    filename='~/.config/qtile/wifi-pentagon.svg',
-                    margin=2,
-                    mouse_callbacks={"Button1": wifi},
-                ),
-
-                widget.Spacer(
-                    length=10
-                ),
-                widget.TextBox(
-                    text=" ",
-                    font="Font Awesome 6 Free Solid",
-                    foreground='#a9d8be',
+                    filename='~/.config/qtile/assets/icons/battery.svg',
+                    margin=5
                 ),
                 widget.Battery(
                     font="JetBrains Mono Bold",
                     foreground='#a9d8be',
                     format='{percent:2.0%}',
+                    notify_below=25,
+                    update_interval=10
+                ),
+                widget.Spacer(
+                    length=30
+                ),
+                widget.Image(
+                    filename='~/.config/qtile/assets/icons/bluetooth-circle.svg',
+                    margin=4,
+                    mouse_callbacks={"Button1": bluetooth},
+                ),
+                widget.Image(
+                    filename='~/.config/qtile/assets/icons/wifi-pentagon.svg',
+                    margin=2,
+                    mouse_callbacks={"Button1": wifi},
+                ),
+                widget.Spacer(
+                    length=10
                 ),
                 widget.Spacer(
                     length=50
@@ -294,6 +299,7 @@ bring_front_click = False
 floats_kept_above = True
 cursor_warp = False
 floating_layout = layout.Floating(
+    **theme,
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,
