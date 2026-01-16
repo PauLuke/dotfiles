@@ -1,0 +1,11 @@
+enable_esc_key = true
+
+logout_cmd = "loginctl terminate-user $USER"
+
+[appearance]
+scale_factor = 1.1
+
+[modules]
+left = [ "Workspaces" ]
+center = [ "Clock" ]
+right = [ [ "Privacy", "Tray", "SystemInfo", "Settings" ] ]

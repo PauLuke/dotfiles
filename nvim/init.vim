@@ -7,6 +7,43 @@ set clipboard=unnamedplus
 " highlight current cursorline
 set cursorline
 
+" Status line
+function! ModeName()
+  let l:mode_map = {
+        \ 'n': 'NORMAL',
+        \ 'no': 'N·OPERATOR',
+        \ 'v': 'VISUAL',
+        \ 'V': 'V·LINE',
+        \ "\<C-v>": 'V·BLOCK',
+        \ 's': 'SELECT',
+        \ 'S': 'S·LINE',
+        \ "\<C-s>": 'S·BLOCK',
+        \ 'i': 'INSERT',
+        \ 'ic': 'INSERT',
+        \ 'ix': 'INSERT',
+        \ 'R': 'REPLACE',
+        \ 'Rv': 'V·REPLACE',
+        \ 'c': 'COMMAND',
+        \ 'cv': 'EX',
+        \ 'ce': 'EX',
+        \ 'r': '…INPUT',
+        \ 'rm': '—MORE',
+        \ 't': 'TERMINAL',
+        \ }
+  return get(l:mode_map, mode(), mode())
+endfunction
+
+highlight StatusMode guibg=#45475a guifg=#89b4fa gui=bold
+highlight StatusFile guibg=#45475a guifg=#a6e3a1 gui=bold
+
+set laststatus=3
+set statusline=
+set statusline+=%#StatusMode#
+set statusline+=\ %{ModeName()}
+set statusline+=%=
+set statusline+=%#StatusFile#
+set statusline+=\ %f
+
 " Config for tabs
 set expandtab " Use spaces instead of tabs
 set tabstop=2 " Number of spaces a tab counts for
@@ -43,7 +80,6 @@ Plug 'MunifTanjim/nui.nvim'
 Plug 'echasnovski/mini.nvim'
 Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 Plug 'windwp/nvim-ts-autotag' " nvim-ts-autotag will not work unless you have treesitter parsers (like html) installed for a given filetype. To do this you can run :TSInstall <language_to_install>
-Plug 'nvim-lualine/lualine.nvim'
 Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
 Plug 'folke/noice.nvim'
 Plug 'rcarriga/nvim-notify'
@@ -57,14 +93,29 @@ colorscheme catppuccin-macchiato " Options: catppuccin-latte, catppuccin-frappe,
 " integrating Lua code
 lua << EOF
 require('nvim-ts-autotag').setup()
-require('lualine').setup{options = {theme = 'dracula'}}
 require('mini.pairs').setup()
 require("bufferline").setup{ options = {offsets = {{filetype = "neo-tree", text="Neo Tree", separator= true, text_align = "left" }}}}
-require("toggleterm").setup{size = 10, persist_mode = false}
 require("neo-tree").setup{window = {width = 29}}
+require("toggleterm").setup{size = 10, persist_mode = false,
+-- Make toggleterm respect neo-tree space:
+on_open = function(_)
+    local name = vim.fn.bufname("neo-tree")
+    local winnr = vim.fn.bufwinnr(name)
+
+    if winnr ~= -1 then
+      vim.defer_fn(function()
+        local cmd = string.format("Neotree toggle")
+        vim.cmd(cmd)
+        vim.cmd(cmd)
+        vim.cmd("wincmd p")
+      end, 100)
+    end
+  end,
+}
 require("noice").setup()
-require('blink.cmp').setup{keymap = {preset = 'none', ['<Up>'] = { 'select_prev', 'fallback' }, ['<Down>'] = { 'select_next', 'fallback' }, ['<CR>'] = { 'select_and_accept', 'fallback' }, ['<S-Tab>'] = { 'snippet_forward', 'fallback' }, } }
+require('blink.cmp').setup{keymap = {preset = 'none', ['<Up>'] = { 'select_prev', 'fallback' }, ['<Down>'] = { 'select_next', 'fallback' }, ['<CR>'] = { 'select_and_accept', 'fallback' }, ['<S-Tab>'] = { 'snippet_forward', 'fallback' }}, fuzzy = { implementation = "prefer_rust" }, completion = {documentation = {auto_show = false, window = {min_width = 0, max_width = 0, max_height = 0}}}}
 require("ibl").setup()
+
 -- Setup LSP using vim.lsp.config
 vim.lsp.config['python'] = {
   -- Command and arguments to start the server.
@@ -94,5 +145,6 @@ vim.lsp.enable('c')
 vim.lsp.enable('css')
 vim.lsp.enable('rust')
 vim.lsp.enable('typescript')
+
 EOF
 

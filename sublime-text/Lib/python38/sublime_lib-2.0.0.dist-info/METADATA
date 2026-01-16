@@ -1,0 +1,79 @@
+Metadata-Version: 2.4
+Name: sublime_lib
+Version: 2.0.0
+Summary: Utility library for frequently used functionality in Sublime Text
+Author: FichteFoll, Thom1729
+License: MIT License
+        
+        Copyright (c) 2018 Thomas Smith
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+License-File: LICENSE
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+
+# sublime_lib
+
+A utility library for Sublime Text providing a variety of convenience features for other packages to use.
+
+## Installation
+
+To make use of sublime_lib in your own package, first declare it as a [dependency](https://packagecontrol.io/docs/dependencies) of your package. Create a file named `dependencies.json` in the root of your package with the following contents:
+
+```json
+{
+    "*": {
+        "*": [
+            "sublime_lib"
+        ]
+    }
+}
+```
+
+Once you have declared the dependency, open the command palette and run `Package Control: Satisfy Dependencies` to ensure that sublime_lib is installed and available for use.
+
+Then, anywhere in your package, you can import sublime_lib by name:
+
+```python
+import sublime_lib
+```
+
+## Features
+
+For complete documentation of all features, see the [API documentation](https://sublimetext.github.io/sublime_lib/).
+
+Highlights include:
+
+- [`SettingsDict`](https://sublimetext.github.io/sublime_lib/modules/sublime_lib.settings_dict.html), which wraps a `sublime.Settings` object with an interface modeled after a standard Python `dict`.
+- [`ViewStream`](https://sublimetext.github.io/sublime_lib/modules/sublime_lib.view_stream.html), a standard [Python IO stream](https://docs.python.org/3/library/io.html#io.TextIOBase) wrapping a `sublime.View` object; and [OutputPanel](https://sublimetext.github.io/sublime_lib/modules/sublime_lib.output_panel.html), which extends `ViewStream` to provide additional functionality for output panel views.
+- The [`syntax` submodule](https://sublimetext.github.io/sublime_lib/modules/sublime_lib.syntax.html), providing methods to list all loaded syntax definitions and to find a syntax matching a given scope.
+
+
+## Releasing a new version
+
+1. Create a tag in the format `v<major>.<minor>.<patch>`
+2. Push the tag to origin.
+
+A github action should be created that builds a WHEEL file,
+creates a release for this tag
+and attaches the WHEEL file as an artifact.

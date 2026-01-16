@@ -1,0 +1,21 @@
+{
+	"bootstrapped": true,
+	"installed_packages":
+	[
+		"A File Icon",
+		"auto-save",
+		"AutoFileName",
+		"BracketHighlighter",
+		"Dracula Color Scheme",
+		"HTML-CSS-JS Prettify",
+		"LSP",
+		"LSP-copilot",
+		"LSP-pylsp",
+		"Package Control",
+		"SideBarEnhancements",
+		"Terminus",
+	],
+	"in_process_packages":
+	[
+	],
+}
