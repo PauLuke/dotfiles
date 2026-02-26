@@ -1,33 +1,38 @@
 {   
     // General:
-    "layer": "bottom", // the logic says top, but in practice...
+    "layer": "bottom",
     "position": "top",
-    "height": 0,
+    "height": 30,
     "margin-top": 7,
-    "margin-left": 10,
-    "margin-bottom": 7, 
-    "margin-right": 10,
-    "spacing": 0, // Gaps between modules
+    "margin-left": 7,
+    "margin-right": 7,
+    "spacing": 15, // Gaps between modules
     "modules-left": ["hyprland/workspaces"],
     "modules-center": ["clock"],
-    "modules-right": [
-      "cpu",
-      "battery",
-	    "network",
-      "bluetooth",
-      "backlight",
-      "wireplumber",
-	    "idle_inhibitor",
-      "hyprland/language",
-	    "tray",
-	    "custom/power"
-    ],
+    "modules-right": ["group/hardware", "custom/power"],
+	  "group/hardware": {
+		  "orientation": "horizontal",
+		  "modules": [
+        "custom/mic",
+        "custom/cam",
+	      "tray",
+        "cpu",
+        "temperature",
+        "custom/fan",
+        "battery",
+	      "network",
+        "bluetooth",
+        "backlight",
+        "wireplumber",
+	      "idle_inhibitor"
+		  ]
+	  },
 
     // Modules:
     "battery": {
         "interval": 2,
         "states": {
-            "good": 95,
+            "good": 80,
             "warning": 30,
             "critical": 20
         },
@@ -46,13 +51,27 @@
     "backlight": {
         "device": "intel_backlight",
         "format": "{icon} {percent}%",
-        "format-alt": "{percent}% {icon}",
-        "format-alt-click": "click-right",
-        "format-icons": ["  ", "  "],
+        "format-icons": ["󰃠  "],
+        "reverse-scrolling": true,
+        "tooltip": false
+    },
+
+    "custom/mic": {
+        "format": "{}",
+        "interval": 1,
+        "exec": "echo ''",
+        "exec-if": "~/.config/scripts/mic-used.sh"
+    },
+
+    "custom/cam": {
+        "format": "{}",
+        "interval": 1,
+        "exec": "echo ''",
+        "exec-if": "~/.config/scripts/cam-used.sh"
     },
     
     "custom/power": {
-        "format": "",
+        "format": " ",
         "tooltip": false,
         "on-click": "wlogout"
     },
@@ -64,6 +83,17 @@
 	      "on-click": "gnome-calendar"
     },
 
+    "custom/fan": {
+        "exec": "~/.config/scripts/fan-speed.sh",
+        "interval": 1,
+        "format": "󰈐  {}%",
+        "min-length": 7,
+        "tooltip-format": "{}%",
+        "on-click": "nbfc set -a",
+        "on-scroll-up": "~/.config/scripts/fan-raise.sh",
+        "on-scroll-down": "~/.config/scripts/fan-lower.sh",
+        "reverse-scrolling": true
+    },
 
     "cpu": {
         "interval": 2,
@@ -91,26 +121,30 @@
         "active-only": false
     },
 
+    "temperature": {
+        // "thermal-zone": 2,
+        // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+        "critical-threshold": 80,
+        "format": "  {temperatureC}°C",
+        "tooltip": false
+    },
+
     "wireplumber": {
         //"on-click-right": "amixer sset Master toggle 1>/dev/null",
         "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
         //on-scroll-down: "${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.04+";
         //on-scroll-up: "${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.04-";
         "format": "{icon} {volume}%",
-        "format-muted": " ",
+        "format-muted": " ",
         "format-source": "",
         "format-source-muted": "",
         //"format-muted": "<span foreground='#fab387'> </span>",
         //"format-icons": [ "<span foreground='#fab387'></span>" ]
         "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
             "default": [" ", "  ", "  "]
-        }
+        },
+        "reverse-scrolling": true,
+        "tooltip": false
     },
 
     "tray": {
@@ -118,39 +152,28 @@
         "spacing": 5
     },
 
-    "hyprland/language": {
-	    "format": "{}",
-	    "min-length" : 3,
-    	"format-pt": "BR",
-    	"format-en": "US",
-    	"keyboard-name": "at-translated-set-2-keyboard",
-    	"on-click": "hyprctl switchxkblayout at-translated-set-2-keyboard next"
-    },
-
     "bluetooth": {
-	// "controller": "controller1", // specify the alias of the controller if there are more than 1 on the system
-	    "format": " {status}",
-	    "format-disabled": "", // an empty format will hide the module
-	    "format-connected": " {num_connections} connected",
-	    "tooltip-format": "{controller_alias}\t{controller_address}",
-	    "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
-	    "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
-	    "on-click": "~/.scripts/rofi-bluetooth"
+	    "format": "",
+	    "format-disabled": "󰂲", // an empty format will hide the module
+	    "format-connected": "",
+	    "tooltip-format": "Not connected",
+	    "tooltip-format-connected": "{device_enumerate}",
+	    "tooltip-format-enumerate-connected": "Connected to {device_alias}",
+	    "on-click": "~/.config/scripts/rofi-bluetooth"
     },
 
     "network": {
       //"interface": "wlan0",
     	"format": "...",
-    	"format-wifi": "",
-    	"format-ethernet": "",
-    	"format-disconnected": "", //An empty format will hide the module.
-    	"tooltip-format": " {bandwidthUpBits} |  {bandwidthDownBits",
+    	"format-wifi": " ",
+    	"format-ethernet": "󰈀",
+    	"format-disconnected": "󰌙", //An empty format will hide the module.
+    	"tooltip-format": " {bandwidthUpBits} |  {bandwidthDownBits}",
     	"tooltip-format-wifi": "{essid} |  {bandwidthUpBits} |  {bandwidthDownBits}",
     	"tooltip-format-ethernet": "Ethernet |  {bandwidthUpBits} |  {bandwidthDownBits}",
-    	"tooltip-format-disconnected": "",
-    	"max-length": 50,
+    	"tooltip-format-disconnected": "No connection",
 	    "interval": 5,
-      "on-click": "~/.scripts/rofi-wifi",
+      "on-click": "~/.config/scripts/rofi-wifi",
       "min-length": 3
     },
 
