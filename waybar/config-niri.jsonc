@@ -7,7 +7,7 @@
     "margin-left": 7,
     "margin-right": 7,
     "spacing": 15, // Gaps between modules
-    "modules-left": ["hyprland/workspaces"],
+    "modules-left": ["niri/workspaces"],
     "modules-center": ["clock"],
     "modules-right": ["group/hardware", "custom/power"],
 	  "group/hardware": {
@@ -163,21 +163,18 @@
     },
 
     "network": {
-        "interface": "wlan0",
-        "format-icons": ["󰤟 ", "󰤢 ", "󰤥 ", "󰤨 "],
-        "interval": 1,
+      //"interface": "wlan0",
     	"format": "...",
-    	"format-wifi": "{icon}",
+    	"format-wifi": " ",
     	"format-ethernet": "󰈀",
-    	"format-disconnected": "󰌙",
-    	"format-disabled": "󰌙",
-    	"tooltip-format": "  {bandwidthDownBits} |   {bandwidthUpBits}",
-    	"tooltip-format-wifi": "{essid} |   {bandwidthDownBits} |   {bandwidthUpBits}",
-    	"tooltip-format-ethernet": "Ethernet |   {bandwidthDownBits} |   {bandwidthUpBits}",
+    	"format-disconnected": "󰌙", //An empty format will hide the module.
+    	"tooltip-format": " {bandwidthUpBits} |  {bandwidthDownBits}",
+    	"tooltip-format-wifi": "{essid} |  {bandwidthUpBits} |  {bandwidthDownBits}",
+    	"tooltip-format-ethernet": "Ethernet |  {bandwidthUpBits} |  {bandwidthDownBits}",
     	"tooltip-format-disconnected": "No connection",
-    	"tooltip-format-disabled": "No connection",
-      	"on-click": "~/.config/scripts/rofi-wifi",
-      	"min-length": 3
+	    "interval": 5,
+      "on-click": "~/.config/scripts/rofi-wifi",
+      "min-length": 3
     },
 
     "idle_inhibitor": {
